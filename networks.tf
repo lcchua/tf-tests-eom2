@@ -10,7 +10,7 @@ resource "aws_vpc" "lcchua-tf-vpc" {
 
   tags = {
     group = var.stack_name
-    Name  = "stw-vpc"
+    Name  = "${var.stack_name}-vpc"
   }
 }
 output "vpc-id" {
@@ -31,12 +31,12 @@ resource "aws_subnet" "lcchua-tf-public-subnet" {
 
   tags = {
     group = var.stack_name
-    Name  = "stw public-subnet-${count.index +1}"
+    Name  = "${var.stack_name}-public-subnet-${count.index +1}"
   }
 }
 output "public-subnet" {
   description = "stw subnet public subnet"
-  value       = element(aws_subnet.lcchua-tf-public-subnet[*].id, 0)
+  value       = element(aws_subnet.lcchua-tf-public-subnet[*].id, count.index)
 }
 
 # Private Subnets
@@ -49,12 +49,13 @@ resource "aws_subnet" "lcchua-tf-private-subnet" {
 
   tags = {
     group = var.stack_name
-    Name  = "stw private-subnet-${count.index +1}"
+    Name  = "${var.stack_name}-private-subnet-${count.index +1}"
   }
-}
-output "private-subnet" {
+
+  output "private-subnet" {
   description = "stw subnet private subnet"
-  value       = element(aws_subnet.lcchua-tf-private-subnet[*].id, 0)
+  value       = element(aws_subnet.lcchua-tf-private-subnet[*].id, count.index)
+  }
 }
 
 
@@ -65,7 +66,7 @@ resource "aws_internet_gateway" "lcchua-tf-igw" {
 
   tags = {
     group = var.stack_name
-    Name  = "stw-igw"
+    Name  = "${var.stack_name}-igw"
   }
 }
 output "igw" {
@@ -82,8 +83,7 @@ resource "aws_nat_gateway" "lcchua-tf-nat-gw" {
   subnet_id     = element(aws_subnet.lcchua-tf-public-subnet[*].id, 0)
 
   tags = {
-    Name  = "stw-nat-gw"
-    group = var.stack_name
+    Name  = "${var.stack_name}-nat-gw"
   }
 }
 output "nat-gw" {
@@ -94,8 +94,7 @@ output "nat-gw" {
 resource "aws_eip" "lcchua-tf-eip" {
     domain = "vpc"
     tags = {
-    group = var.stack_name
-    Name  = "stw-eip"
+    Name  = "${var.stack_name}-eip"
   }
 }
 output "eip" {
@@ -125,8 +124,7 @@ resource "aws_route_table" "lcchua-tf-private-rt" {
   }
 
   tags = {
-    group = var.stack_name
-    Name  = "stw-private-rt"
+    Name  = "${var.stack_name}-private-rt"
   }
 }
 resource "aws_route_table_association" "lcchua-tf-private-rta" {
@@ -157,8 +155,7 @@ resource "aws_route_table" "lcchua-tf-public-rt" {
   }
 
   tags = {
-    group = var.stack_name
-    Name  = "stw-public-rt"
+    Name  = "${var.stack_name}-public-rt"
   }
 }
 resource "aws_route_table_association" "lcchua-tf-public-rta" {
@@ -187,8 +184,7 @@ resource "aws_vpc_endpoint" "lcchua-tf-vpce-s3" {
   ]
 
   tags = {
-    group = var.stack_name
-    Name  = "stw-vpc-s3-endpoint"
+    Name  = "${var.stack_name}-vpc-s3-endpoint"
   }
 }
 output "vpce-s3" {
@@ -233,8 +229,7 @@ resource "aws_security_group" "lcchua-tf-sg-allow-ssh-http-https" {
   }
 
   tags = {
-    group = var.stack_name
-    Name  = "stw-sg-ssh-http-https"
+    Name  = "${var.stack_name}-sg-ssh-http-https"
   }
 }
 output "web-sg" {
