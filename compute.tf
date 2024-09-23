@@ -1,6 +1,5 @@
 
 #============ ACI FILTER - DYNAMIC IMAGE SELECTION =============
-
 data "aws_ami" "lcchua-tf-ami" {
   most_recent = true
   owners      = ["amazon"]
