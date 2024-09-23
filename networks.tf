@@ -1,237 +1,83 @@
 
 #============ VPC =============
-# Note that when a VPC is created, a main route table it created by default
-# that is responsible for enabling the flow of network traffic within the VPC
+# This defines a vpc resource making use of AWS-managed module
 
-resource "aws_vpc" "lcchua-tf-vpc" {
-  cidr_block           = "10.0.0.0/16"
-  enable_dns_support   = true
-  enable_dns_hostnames = true
+module "vpc" {
+  source = "terraform-aws-modules/vpc/aws"
+  version = "5.13.0"
+
+  name = var.vpc_name
+  cidr = "10.0.0.0/16"
+
+  azs             = ["us-east-1a", "us-east-1b", "us-east-1c"]
+  private_subnets = ["10.0.0.0/24", "10.0.1.0/24", "10.0.2.0/24"]
+  public_subnets  = ["10.0.3.0/24", "10.0.4.0/24", "10.0.5.0/24"]
+
+# Note that enable_dns_support and enable_dns_hostnames are defaulted 
+# True in the TF Registry VPC module
+//  enable_nat_gateway = true
+//  enable_vpn_gateway = true
+  map_public_ip_on_launch = true
 
   tags = {
-    group = var.stack_name
-    Name  = "${var.stack_name}-vpc"
+    Terraform = "true"
+    #Environment = var.env
+    Created_by = "lcchua"
+    Cohort = "CE7"
   }
 }
 output "vpc-id" {
-  description = "stw vpc"
-  value       = aws_vpc.lcchua-tf-vpc.id
+  value = module.vpc.vpc_id
 }
 
+module "security-group" {
+  source  = "terraform-aws-modules/security-group/aws"
+  version = "5.2.0"
 
-#============ SUBNETS =============
+  name        = var.sg_name
+  description = "Security group for http-https-ssh ports"
+  vpc_id      = module.vpc.vpc_id
 
-# Public Subnets
-resource "aws_subnet" "lcchua-tf-public-subnet" {
-  count                   = 3
-  vpc_id                  = aws_vpc.lcchua-tf-vpc.id
-  cidr_block              = "10.0.${count.index}.0/24"
-  availability_zone       = element(local.availability_zones, count.index)
-  map_public_ip_on_launch = true
-
-  tags = {
-    group = var.stack_name
-    Name  = "${var.stack_name}-public-subnet-${count.index +1}"
-  }
-}
-output "public-subnet" {
-  description = "stw subnet public subnet"
-  value       = aws_subnet.lcchua-tf-public-subnet[*].id
-}
-
-# Private Subnets
-resource "aws_subnet" "lcchua-tf-private-subnet" {
-  count                   = 3
-  vpc_id                  = aws_vpc.lcchua-tf-vpc.id
-  cidr_block              = "10.0.${count.index + 3}.0/24"
-  availability_zone       = element(local.availability_zones, count.index)
-  map_public_ip_on_launch = true
-
-  tags = {
-    group = var.stack_name
-    Name  = "${var.stack_name}-private-subnet-${count.index +1}"
-  }
-}
-output "private-subnet" {
-  description = "stw subnet private subnet"
-  value       = aws_subnet.lcchua-tf-private-subnet[*].id
-}
-
-
-#============ INTERNET GATEWAY =============
-
-resource "aws_internet_gateway" "lcchua-tf-igw" {
-  vpc_id = aws_vpc.lcchua-tf-vpc.id
-
-  tags = {
-    group = var.stack_name
-    Name  = "${var.stack_name}-igw"
-  }
-}
-output "igw" {
-  description = "stw igw"
-  value       = aws_internet_gateway.lcchua-tf-igw.id
-}
-
-
-/* Uncomment as and when needed
-#============ NAT GATEWAY + EIP =============
-
-resource "aws_nat_gateway" "lcchua-tf-nat-gw" {
-  allocation_id = aws_eip.lcchua-tf-eip.id
-  subnet_id     = element(aws_subnet.lcchua-tf-public-subnet[*].id, 0)
-
-  tags = {
-    Name  = "${var.stack_name}-nat-gw"
-  }
-}
-output "nat-gw" {
-  description = "stw NAT gateway"
-  value       = aws_nat_gateway.lcchua-tf-nat-gw.id
-}
-
-resource "aws_eip" "lcchua-tf-eip" {
-    domain = "vpc"
-    tags = {
-    Name  = "${var.stack_name}-eip"
-  }
-}
-output "eip" {
-  description = "stw EIP"
-  value       = aws_eip.lcchua-tf-eip.id
-} 
-*/
-
-
-#============ ROUTE TABLES =============
-
-/* Uncomment as and when needed
-# Private subnets route tables and associations
-resource "aws_route_table" "lcchua-tf-private-rt" {
-  vpc_id = aws_vpc.lcchua-tf-vpc.id
-
-  # since this is exactly the route AWS will create, the route will be adopted
-  # this route{} block may not need to be defined here
-  route {
-    cidr_block = aws_vpc.lcchua-tf-vpc.cidr_block
-    gateway_id = "local"
-  }
-
-  route {
-    cidr_block = "0.0.0.0/0"
-    gateway_id = aws_nat_gateway.lcchua-tf-nat-gw.id
-  }
-
-  tags = {
-    Name  = "${var.stack_name}-private-rt"
-  }
-}
-resource "aws_route_table_association" "lcchua-tf-private-rta" {
-  count          = length(aws_subnet.lcchua-tf-private-subnet)
-  subnet_id      = aws_subnet.lcchua-tf-private-subnet[count.index].id
-  route_table_id = aws_route_table.lcchua-tf-private-rt.id
-}
-output "private-route-table" {
-  description = "stw private subnet route table"
-  value       = "Private subnet rt = ${aws_route_table.lcchua-tf-private-rt.id}"
-}
-*/
-
-# Public subnets route tables and associations
-resource "aws_route_table" "lcchua-tf-public-rt" {
-  vpc_id = aws_vpc.lcchua-tf-vpc.id
-
-  # since this is exactly the route AWS will create, the route will be adopted
-  # this route{} block may not need to be defined here
-  route {
-    cidr_block = aws_vpc.lcchua-tf-vpc.cidr_block
-    gateway_id = "local"
-  }
-
-  route {
-    cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.lcchua-tf-igw.id
-  }
-
-  tags = {
-    Name  = "${var.stack_name}-public-rt"
-  }
-}
-resource "aws_route_table_association" "lcchua-tf-public-rta" {
-  count          = length(aws_subnet.lcchua-tf-public-subnet)
-  subnet_id      = aws_subnet.lcchua-tf-public-subnet[count.index].id
-  route_table_id = aws_route_table.lcchua-tf-public-rt.id
-}
-output "public-route-table" {
-  description = "stw public subnet route table"
-  value       = "Public subnet rt = ${aws_route_table.lcchua-tf-public-rt.id}"
-}
-
-
-/* Uncomment as and when needed 
-#============ VPC ENDPOINT FOR S3 =============
-
-resource "aws_vpc_endpoint" "lcchua-tf-vpce-s3" {
-  vpc_id            = aws_vpc.lcchua-tf-vpc.id
-  service_name      = "com.amazonaws.${var.region}.s3"
-  vpc_endpoint_type = "Gateway"
-  route_table_ids = [
-    #aws_route_table.lcchua-tf-private-rtb-az1.id,
-    #aws_route_table.lcchua-tf-private-rtb-az2.id,
-    #aws_route_table.lcchua-tf-private-rtb-az3.id,
-    aws_route_table.lcchua-tf-public-rtb.id
+  //ingress_cidr_blocks = ["10.10.0.0/16"]
+  ingress_with_cidr_blocks = [
+    {
+      from_port   = 80
+      to_port     = 80
+      protocol    = "tcp"
+      description = "HTTP"
+      cidr_blocks = "0.0.0.0/0"
+    },
+    {
+      from_port   = 443
+      to_port     = 443
+      protocol    = "tcp"
+      description = "HTTPS"
+      cidr_blocks = "0.0.0.0/0"
+    },
+    {
+      from_port   = 22
+      to_port     = 22
+      protocol    = "tcp"
+      description = "SSH"
+      cidr_blocks = "0.0.0.0/0"
+    },
+/*     {
+      from_port   = 3306
+      to_port     = 3306
+      protocol    = "tcp"
+      description = "MySQL/Aurora"
+      cidr_blocks = "0.0.0.0/0"
+    } */
   ]
 
-  tags = {
-    Name  = "${var.stack_name}-vpc-s3-endpoint"
+  egress_rules = ["all-all"]
+
+  tags  = {
+    Name        = "${var.stack_name}-sg-http-https-ssh"
+    #Environment = var.env
   }
 }
-output "vpce-s3" {
-  description = "stw vpc endpoint for s3"
-  value       = aws_vpc_endpoint.lcchua-tf-vpce-s3.id
+output "sg-id" {
+  value = module.security-group.security_group_id
 }
-*/
 
-#============ SECURITY GROUP =============
-
-resource "aws_security_group" "lcchua-tf-sg-allow-ssh-http-https" {
-  name   = "lcchua-tf-sg-allow-ssh-http-https"
-  vpc_id = aws_vpc.lcchua-tf-vpc.id
-
-  # SSH
-  ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  # HTTP
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  # HTTPS
-  ingress {
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = -1
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = {
-    Name  = "${var.stack_name}-sg-ssh-http-https"
-  }
-}
-output "web-sg" {
-  description = "stw web security group for ssh http https"
-  value       = aws_security_group.lcchua-tf-sg-allow-ssh-http-https.id
-}

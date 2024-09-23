@@ -21,3 +21,21 @@ variable "region" {
   type        = string
   default     = "us-east-1"
 }
+
+# The variables defined from here on are meant for the AWS VPC Terraform module
+variable "vpc_name" {
+  description = "The VPC Name to use"
+  type        = string
+  default     = "${var.stack_name}-vpc"
+}
+variable "sg_name" {
+  description = "Security group for http-https-ssh"
+  type        = string
+  default     = "${var.stack_name}-sg-http-https-ssh"
+}
+
+variable "ec2_name" {
+  description = "Name of EC2"
+  type        = string
+  default     = "${var.stack_name}-ec2-instance"
+}
