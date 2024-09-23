@@ -22,8 +22,7 @@ module "vpc" {
   tags = {
     Terraform = "true"
     #Environment = var.env
-    Created_by = "lcchua"
-    Cohort = "CE7"
+    Name = "${var.stack_name}-vpc"
   }
 }
 output "vpc-id" {

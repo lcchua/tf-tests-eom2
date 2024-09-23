@@ -26,16 +26,11 @@ variable "region" {
 variable "vpc_name" {
   description = "The VPC Name to use"
   type        = string
-  default     = "${var.stack_name}-vpc"
+  default     = "lcchua-mod-vpc"
 }
 variable "sg_name" {
   description = "Security group for http-https-ssh"
   type        = string
-  default     = "${var.stack_name}-sg-http-https-ssh"
+  default     = "lcchua-mod-sg"
 }
 
-variable "ec2_name" {
-  description = "Name of EC2"
-  type        = string
-  default     = "${var.stack_name}-ec2-instance"
-}
