@@ -1,8 +1,7 @@
 #!/bin/bash
 
-# After systemctl start httpd, can see the Apache test page 
-# if you enter the EC2 Public IPv4 address in your Internet Browser
-# Or else after the EC2 instance is ready, can curl http://localhost:80
+# Once the EC2 instance is running and ready, can 
+# "curl http://<ec2 public ip address>:80"
 # to see the display message below
 
 yum update -y
