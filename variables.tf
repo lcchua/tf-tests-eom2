@@ -25,7 +25,7 @@ variable "region" {
 variable "instance_type" {
   description = "Type of EC2 instance"
   type        = string
-  default     = "t2-micro"
+  default     = "t2.micro"
 }
 
 # The variables defined from here on are meant for the AWS VPC Terraform module
