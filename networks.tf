@@ -36,7 +36,7 @@ resource "aws_subnet" "lcchua-tf-public-subnet" {
 }
 output "public-subnet" {
   description = "stw subnet public subnet"
-  value       = element(aws_subnet.lcchua-tf-public-subnet[*].id, count.index)
+  value       = element(aws_subnet.lcchua-tf-public-subnet[*].id)
 }
 
 # Private Subnets
@@ -54,9 +54,8 @@ resource "aws_subnet" "lcchua-tf-private-subnet" {
 }
 output "private-subnet" {
   description = "stw subnet private subnet"
-  value       = element(aws_subnet.lcchua-tf-private-subnet[*].id, count.index)
+  value       = element(aws_subnet.lcchua-tf-private-subnet[*].id)
 }
-
 
 
 #============ INTERNET GATEWAY =============
