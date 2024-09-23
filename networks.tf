@@ -30,7 +30,7 @@ resource "aws_subnet" "lcchua-tf-public-subnet" {
   map_public_ip_on_launch = true
 
   tags = {
-    Name  = "${var.stack_name}-public-subnet-${count.index +1}"
+    Name = "${var.stack_name}-public-subnet-${count.index + 1}"
   }
 }
 output "public-subnet" {
@@ -47,7 +47,7 @@ resource "aws_subnet" "lcchua-tf-private-subnet" {
   map_public_ip_on_launch = true
 
   tags = {
-    Name  = "${var.stack_name}-private-subnet-${count.index +1}"
+    Name = "${var.stack_name}-private-subnet-${count.index + 1}"
   }
 }
 output "private-subnet" {
@@ -62,7 +62,7 @@ resource "aws_internet_gateway" "lcchua-tf-igw" {
   vpc_id = aws_vpc.lcchua-tf-vpc.id
 
   tags = {
-    Name  = "${var.stack_name}-igw"
+    Name = "${var.stack_name}-igw"
   }
 }
 output "igw" {
@@ -152,7 +152,7 @@ resource "aws_route_table" "lcchua-tf-public-rt" {
   }
 
   tags = {
-    Name  = "${var.stack_name}-public-rt"
+    Name = "${var.stack_name}-public-rt"
   }
 }
 resource "aws_route_table_association" "lcchua-tf-public-rta" {
@@ -226,7 +226,7 @@ resource "aws_security_group" "lcchua-tf-sg-allow-ssh-http-https" {
   }
 
   tags = {
-    Name  = "${var.stack_name}-sg-ssh-http-https"
+    Name = "${var.stack_name}-sg-ssh-http-https"
   }
 }
 output "web-sg" {
