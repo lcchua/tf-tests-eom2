@@ -134,7 +134,7 @@ resource "aws_route_table_association" "lcchua-tf-private-rta" {
   subnet_id      = aws_subnet.lcchua-tf-private-subnet[count.index].id
   route_table_id = aws_route_table.lcchua-tf-private-rt.id
 }
-output "private route table" {
+output "private-route-table" {
   description = "stw private subnet route table"
   value       = "Private subnet rt = ${aws_route_table.lcchua-tf-private-rt.id}, rta = ${aws_route_table_association.lcchua-tf-private-rta.id}"
 }
@@ -166,7 +166,7 @@ resource "aws_route_table_association" "lcchua-tf-public-rta" {
   subnet_id      = aws_subnet.lcchua-tf-public-subnet[count.index].id
   route_table_id = aws_route_table.lcchua-tf-public-rt.id
 }
-output "public route table" {
+output "public-route-table" {
   description = "stw public subnet route table"
   value       = "Public subnet rt = ${aws_route_table.lcchua-tf-public-rt.id}, rta = ${aws_route_table_association.lcchua-tf-public-rta.id}"
 }
