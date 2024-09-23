@@ -51,12 +51,12 @@ resource "aws_subnet" "lcchua-tf-private-subnet" {
     group = var.stack_name
     Name  = "${var.stack_name}-private-subnet-${count.index +1}"
   }
-
-  output "private-subnet" {
+}
+output "private-subnet" {
   description = "stw subnet private subnet"
   value       = element(aws_subnet.lcchua-tf-private-subnet[*].id, count.index)
-  }
 }
+
 
 
 #============ INTERNET GATEWAY =============
