@@ -21,21 +21,3 @@ variable "region" {
   type        = string
   default     = "us-east-1"
 }
-
-variable "az1" {
-  description = "Name of availability zone 1"
-  type        = string
-  default     = "us-east-1a"
-}
-
-variable "az2" {
-  description = "Name of availability zone 2"
-  type        = string
-  default     = "us-east-1b"
-}
-
-variable "az3" {
-  description = "Name of availability zone 3"
-  type        = string
-  default     = "us-east-1c"
-}
