@@ -192,8 +192,8 @@ output "vpce-s3" {
 
 #============ SECURITY GROUP =============
 
-resource "aws_security_group" "lcchua-tf-sg-allow-ssh-http-https" {
-  name   = "lcchua-tf-sg-allow-ssh-http-https"
+resource "aws_security_group" "lcchua-tf-sg" {
+  name   = "${var.stack_name}-sg"
   vpc_id = aws_vpc.lcchua-tf-vpc.id
 
   # SSH
@@ -226,10 +226,10 @@ resource "aws_security_group" "lcchua-tf-sg-allow-ssh-http-https" {
   }
 
   tags = {
-    Name = "${var.stack_name}-sg-ssh-http-https"
+    Name = "${var.stack_name}-sg"
   }
 }
 output "web-sg" {
   description = "stw web security group for ssh http https"
-  value       = aws_security_group.lcchua-tf-sg-allow-ssh-http-https.id
+  value       = aws_security_group.lcchua-tf-sg.id
 }
