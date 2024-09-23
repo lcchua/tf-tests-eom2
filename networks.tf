@@ -136,7 +136,7 @@ resource "aws_route_table_association" "lcchua-tf-private-rta" {
 }
 output "private-route-table" {
   description = "stw private subnet route table"
-  value       = "Private subnet rt = ${aws_route_table.lcchua-tf-private-rt.id}, rta = ${aws_route_table_association.lcchua-tf-private-rta.id}"
+  value       = "Private subnet rt = ${aws_route_table.lcchua-tf-private-rt.id}"
 }
 */
 
@@ -168,7 +168,7 @@ resource "aws_route_table_association" "lcchua-tf-public-rta" {
 }
 output "public-route-table" {
   description = "stw public subnet route table"
-  value       = "Public subnet rt = ${aws_route_table.lcchua-tf-public-rt.id}, rta = ${aws_route_table_association.lcchua-tf-public-rta[*].id}"
+  value       = "Public subnet rt = ${aws_route_table.lcchua-tf-public-rt.id}"
 }
 
 
