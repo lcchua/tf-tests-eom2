@@ -49,8 +49,7 @@ resource "aws_instance" "lcchua-tf-ec2" {
   monitoring                  = true
 
   tags = {
-    group = var.stack_name
-    Name  = "stw-ec2-server"
+    Name  = "${var.stack_name}-ec2-server"
   }
 }
 output "ec2" {
