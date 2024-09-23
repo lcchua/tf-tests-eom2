@@ -31,7 +31,7 @@ resource "aws_subnet" "lcchua-tf-public-subnet" {
 
   tags = {
     group = var.stack_name
-    Name  = "stw public-subnet-${count_index +1}"
+    Name  = "stw public-subnet-${count.index +1}"
   }
 }
 output "public-subnet" {
@@ -49,7 +49,7 @@ resource "aws_subnet" "lcchua-tf-private-subnet" {
 
   tags = {
     group = var.stack_name
-    Name  = "stw private-subnet-${count_index +1}"
+    Name  = "stw private-subnet-${count.index +1}"
   }
 }
 output "private-subnet" {
