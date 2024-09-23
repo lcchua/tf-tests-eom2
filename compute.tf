@@ -22,7 +22,7 @@ data "aws_ami" "lcchua-tf-ami" {
 */
 }
 output "ami" {
-  description = "17a stw ami"
+  description = "stw ami"
   value       = data.aws_ami.lcchua-tf-ami.id
 }
 
