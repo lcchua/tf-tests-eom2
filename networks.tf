@@ -74,6 +74,7 @@ output "igw" {
 }
 
 
+/* Uncomment as and when needed
 #============ NAT GATEWAY + EIP =============
 
 resource "aws_nat_gateway" "lcchua-tf-nat-gw" {
@@ -100,11 +101,13 @@ resource "aws_eip" "lcchua-tf-eip" {
 output "eip" {
   description = "stw EIP"
   value       = aws_eip.lcchua-tf-eip.id
-}
+} 
+*/
 
 
 #============ ROUTE TABLES =============
 
+/* Uncomment as and when needed
 # Private subnets route tables and associations
 resource "aws_route_table" "lcchua-tf-private-rt" {
   vpc_id = aws_vpc.lcchua-tf-vpc.id
@@ -135,6 +138,7 @@ output "private route table" {
   description = "stw private subnet route table"
   value       = "Private subnet rt = ${aws_route_table.lcchua-tf-private-rt.id}, rta = ${aws_route_table_association.lcchua-tf-private-rta.id}"
 }
+*/
 
 # Public subnets route tables and associations
 resource "aws_route_table" "lcchua-tf-public-rt" {
