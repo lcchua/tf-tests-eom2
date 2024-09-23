@@ -168,7 +168,7 @@ resource "aws_route_table_association" "lcchua-tf-public-rta" {
 }
 output "public-route-table" {
   description = "stw public subnet route table"
-  value       = "Public subnet rt = ${aws_route_table.lcchua-tf-public-rt.id}, rta = ${aws_route_table_association.lcchua-tf-public-rta.id}"
+  value       = "Public subnet rt = ${aws_route_table.lcchua-tf-public-rt.id}, rta = ${aws_route_table_association.lcchua-tf-public-rta[*].id}"
 }
 
 
