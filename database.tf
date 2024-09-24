@@ -3,15 +3,15 @@ resource "aws_db_subnet_group" "lcchua-tf-db-subnet-grp" {
   subnet_ids  = [for subnet in aws_subnet.lcchua-tf-private-subnet : subnet.id]
 }
 
-data "aws_db_engine_version" "latest" {
+data "aws_rds_engine_version" "latest" {
   engine      = var.settings.database.engine
-  most_recent = true
+  latest = true
 }
 resource "aws_db_instance" "lcchua-tf-db" {
   allocated_storage = var.settings.database.allocate_storage
   engine = var.settings.database.engine
   #engine_version = var.settings.database.engine_version
-  engine_version = data.aws_db_engine_version.latest.version
+  engine_version = data.aws_rds_engine_version.latest.version
   instance_class = var.settings.database.instance_class
   #db_name = var.settings.database.db_name
   username = var.db_username
@@ -27,4 +27,8 @@ output "database_endpoint" {
 output "database_port" {
   description = "The port of the database"
   value       = aws_db_instance.lcchua-tf-db.port 
+}
+output "database_version" {
+  description = "The version of the database"
+  value       = aws_db_instance.lcchua-tf-db.engine_version
 }
