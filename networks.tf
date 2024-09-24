@@ -23,7 +23,7 @@ output "vpc-id" {
 
 # Public Subnets
 resource "aws_subnet" "lcchua-tf-public-subnet" {
-  count                   = 3
+  count                   = var.subnet_count.public # adjust number of public subnets to create
   vpc_id                  = aws_vpc.lcchua-tf-vpc.id
   cidr_block              = "10.0.${count.index}.0/24"
   availability_zone       = element(local.availability_zones, count.index)
@@ -40,11 +40,11 @@ output "public-subnet" {
 
 # Private Subnets
 resource "aws_subnet" "lcchua-tf-private-subnet" {
-  count                   = 3
+  count                   = var.subnet_count.private   # adjust number of public subnets to create
   vpc_id                  = aws_vpc.lcchua-tf-vpc.id
   cidr_block              = "10.0.${count.index + 3}.0/24"
   availability_zone       = element(local.availability_zones, count.index)
-  map_public_ip_on_launch = true
+  #map_public_ip_on_launch = true
 
   tags = {
     Name = "${var.stack_name}-private-subnet-${count.index + 1}"
@@ -71,7 +71,6 @@ output "igw" {
 }
 
 
-/* Uncomment as and when needed
 #============ NAT GATEWAY + EIP =============
 
 resource "aws_nat_gateway" "lcchua-tf-nat-gw" {
@@ -88,8 +87,11 @@ output "nat-gw" {
 }
 
 resource "aws_eip" "lcchua-tf-eip" {
-  domain = "vpc"
-    
+  count = var.settings.web_app.count
+  
+  instance  = aws_instance.lcchua-tf-ec2[count.index].id
+  domain    = "vpc"
+
   tags = {
     Name  = "${var.stack_name}-eip"
   }
@@ -97,23 +99,21 @@ resource "aws_eip" "lcchua-tf-eip" {
 output "eip" {
   description = "stw EIP"
   value       = aws_eip.lcchua-tf-eip.id
-} 
-*/
+}
 
 
 #============ ROUTE TABLES =============
 
-/* Uncomment as and when needed
 # Private subnets route tables and associations
 resource "aws_route_table" "lcchua-tf-private-rt" {
   vpc_id = aws_vpc.lcchua-tf-vpc.id
 
   # since this is exactly the route AWS will create, the route will be adopted
   # this route{} block may not need to be defined here
-  route {
-    cidr_block = aws_vpc.lcchua-tf-vpc.cidr_block
-    gateway_id = "local"
-  }
+  #route {
+    #cidr_block = aws_vpc.lcchua-tf-vpc.cidr_block
+    #gateway_id = "local"
+  #}
 
   route {
     cidr_block = "0.0.0.0/0"
@@ -133,7 +133,7 @@ output "private-route-table" {
   description = "stw private subnet route table"
   value       = "Private subnet rt = ${aws_route_table.lcchua-tf-private-rt.id}"
 }
-*/
+
 
 # Public subnets route tables and associations
 resource "aws_route_table" "lcchua-tf-public-rt" {
@@ -141,10 +141,10 @@ resource "aws_route_table" "lcchua-tf-public-rt" {
 
   # since this is exactly the route AWS will create, the route will be adopted
   # this route{} block may not need to be defined here
-  route {
-    cidr_block = aws_vpc.lcchua-tf-vpc.cidr_block
-    gateway_id = "local"
-  }
+  #route {
+    #cidr_block = aws_vpc.lcchua-tf-vpc.cidr_block
+    #gateway_id = "local"
+  #}
 
   route {
     cidr_block = "0.0.0.0/0"
@@ -192,21 +192,23 @@ output "vpce-s3" {
 
 #============ SECURITY GROUP =============
 
-resource "aws_security_group" "lcchua-tf-sg" {
-  name   = "${var.stack_name}-sg"
+# EC2 Security Group
+resource "aws_security_group" "lcchua-tf-ec2-sg" {
+  name   = "${var.stack_name}-ec2-sg"
   vpc_id = aws_vpc.lcchua-tf-vpc.id
 
-  # SSH
-  ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  # HTTP
+  # SSH - inbound rule that allows SSH traffic only from your IP addr
   ingress {
     from_port   = 22
     to_port     = 22
+    protocol    = "tcp"
+    #cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["${var.my_ip}/32"]
+  }
+  # HTTP
+  ingress {
+    from_port   = 80
+    to_port     = 80
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -226,10 +228,32 @@ resource "aws_security_group" "lcchua-tf-sg" {
   }
 
   tags = {
-    Name = "${var.stack_name}-sg"
+    Name = "${var.stack_name}-ec2-sg"
   }
 }
 output "web-sg" {
-  description = "stw web security group for ssh http https"
-  value       = aws_security_group.lcchua-tf-sg.id
+  description = "stw ec2 web security group for ssh http https"
+  value       = aws_security_group.lcchua-tf-ec2-sg
+}
+
+
+# RDS Security Group
+resource "aws_security_group" "lcchua-tf-db-sg" {
+  name   = "${var.stack_name}-db-sg"
+  vpc_id = aws_vpc.lcchua-tf-vpc.id
+
+  ingress {
+    from_port = "3306"
+    to_port   = "3306"
+    protocol  = "tcp"
+    security_groups = [aws_security_group.lcchua-tf-ec2-sg.id]
+  }
+
+  tags = {
+    Name = "${var.stack_name}-db-sg"
+  }
+}
+output "web-sg" {
+  description = "stw db security group for rds mysql"
+  value       = aws_security_group.lcchua-tf-db-sg.id
 }

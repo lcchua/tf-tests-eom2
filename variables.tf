@@ -22,12 +22,67 @@ variable "region" {
   default     = "us-east-1"
 }
 
+/* Uncomment as needed
 variable "instance_type" {
   description = "Type of EC2 instance"
   type        = string
   default     = "t2.micro"
 }
+*/
 
+variable "subnet_count" {
+  description = "Number of subnets"
+  type        = map(number)
+  default = {
+    public  = 3,
+    private = 3
+  }
+}
+
+variable "settings" {
+  description = "Configuration settings for EC2 and RDS instances"
+  type        = map(any)
+  default = {
+    "database" = {
+      allocate_storage  = 10            // storage in GB
+      engine            = "mysql"       // engine type
+      engine_version    = "8.0.27"      // engine_version
+      instance_class    = "db.t2.micro" // rds instance type
+      # db_name           = "tutorial"  // dtabase name if needed
+      skip_final_snapshot = true
+    },
+    "web_app" = {
+      count         = 1           // number of ec2 instances
+      instance_type = "t2.micro"  // ec2 instance type
+    }
+  }
+}
+
+# This varaible contains your IP address. 
+# This is used when setting up the SSH rule on the web security group.
+variable "my_ip" {
+  description = "Your IP address"
+  type        = string
+  sensitive   = true
+}
+
+# This varaible conatins the database master username.
+# This will be stored in a secrets file.
+variable "db_username" {
+  description = "Database master username"
+  type        = string
+  sensitive   = true
+}
+
+# This variable conatins the database master password.
+# This will be stored in a secrets file.
+variable "db_password" {
+  description = "Database master user password"
+  type        = string
+  sensitive   = true
+}
+
+/* 
 # The variables defined from here on are meant for the AWS VPC Terraform module
 variable "vpc_name" {
   description = "The VPC Name to use"
@@ -35,8 +90,8 @@ variable "vpc_name" {
   default     = "lcchua-mod-vpc"
 }
 variable "sg_name" {
-  description = "Security group for http-https-ssh"
+  description = "Security group for ec2 web allowing  http-https-ssh"
   type        = string
-  default     = "lcchua-mod-sg"
+  default     = "lcchua-mod-ec2-sg"
 }
-
+ */
