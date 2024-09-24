@@ -73,8 +73,9 @@ output "igw" {
 
 #============ NAT GATEWAY + EIP =============
 
+/* Uncomment as needed
 resource "aws_nat_gateway" "lcchua-tf-nat-gw" {
-  allocation_id = aws_eip.lcchua-tf-eip.id
+  allocation_id = element(aws_eip.lcchua-tf-eip[*].id, 0)
   subnet_id     = element(aws_subnet.lcchua-tf-public-subnet[*].id, 0)
 
   tags = {
@@ -85,6 +86,7 @@ output "nat-gw" {
   description = "stw NAT gateway"
   value       = aws_nat_gateway.lcchua-tf-nat-gw.id
 }
+*/
 
 resource "aws_eip" "lcchua-tf-eip" {
   count = var.settings.web_app.count
@@ -98,7 +100,7 @@ resource "aws_eip" "lcchua-tf-eip" {
 }
 output "eip" {
   description = "stw EIP"
-  value       = aws_eip.lcchua-tf-eip.id
+  value       = aws_eip.lcchua-tf-eip[*].id
 }
 
 

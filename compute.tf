@@ -59,7 +59,7 @@ resource "aws_instance" "lcchua-tf-ec2" {
 }
 output "ec2" {
   description = "stw EC2 instance"
-  value       = aws_instance.lcchua-tf-ec2.id
+  value       = aws_instance.lcchua-tf-ec2[count.index].id
 }
 output "user-data" {
   description = "stw user data"
