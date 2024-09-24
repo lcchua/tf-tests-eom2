@@ -48,7 +48,7 @@ variable "settings" {
       engine            = "mysql"       // engine type
       engine_version    = "8.0.27"      // engine_version
       instance_class    = "db.t2.micro" // rds instance type
-      # db_name           = "tutorial"  // dtabase name if needed
+      #db_name           = "eom2_tutorial"    // dtabase name if needed
       skip_final_snapshot = true
     },
     "web_app" = {
