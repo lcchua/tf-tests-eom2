@@ -60,11 +60,13 @@ variable "settings" {
 
 # This varaible contains your IP address. 
 # This is used when setting up the SSH rule on the web security group.
+/* Uncomment as and when needed
 variable "my_ip" {
   description = "Your IP address"
   type        = string
   sensitive   = true
 }
+*/
 
 # This varaible conatins the database master username.
 # This will be stored in a secrets file.
