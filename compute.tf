@@ -43,7 +43,7 @@ resource "aws_instance" "lcchua-tf-ec2" {
   #subnet_id                   = element(aws_subnet.lcchua-tf-public-subnet[*].id, 0)
   subnet_id                   = aws_subnet.lcchua-tf-public-subnet[count.index % length(aws_subnet.lcchua-tf-public-subnet[*].id)]
   associate_public_ip_address = true
-  vpc_security_group_ids      = [aws_security_group.lcchua-tf-ec2-sg.id]
+  vpc_security_group_ids      = [aws_security_group.lcchua-tf-ec2-web-sg.id]
 
   # To update the previously created EC2 with a user data script passed in.
   # This is to convert your EC2 into a HTTPD web server.

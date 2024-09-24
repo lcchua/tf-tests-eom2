@@ -193,7 +193,7 @@ output "vpce-s3" {
 #============ SECURITY GROUP =============
 
 # EC2 Security Group
-resource "aws_security_group" "lcchua-tf-ec2-sg" {
+resource "aws_security_group" "lcchua-tf-ec2-web-sg" {
   name   = "${var.stack_name}-ec2-sg"
   vpc_id = aws_vpc.lcchua-tf-vpc.id
 
@@ -228,12 +228,12 @@ resource "aws_security_group" "lcchua-tf-ec2-sg" {
   }
 
   tags = {
-    Name = "${var.stack_name}-ec2-sg"
+    Name = "${var.stack_name}-ec2-web-sg"
   }
 }
-output "web-sg" {
+output "ec2-web-sg" {
   description = "stw ec2 web security group for ssh http https"
-  value       = aws_security_group.lcchua-tf-ec2-sg
+  value       = aws_security_group.lcchua-tf-ec2-web-sg.id
 }
 
 
@@ -246,14 +246,14 @@ resource "aws_security_group" "lcchua-tf-db-sg" {
     from_port = "3306"
     to_port   = "3306"
     protocol  = "tcp"
-    security_groups = [aws_security_group.lcchua-tf-ec2-sg.id]
+    security_groups = [aws_security_group.lcchua-tf-ec2-web-sg.id]
   }
 
   tags = {
     Name = "${var.stack_name}-db-sg"
   }
 }
-output "web-sg" {
+output "db-sg" {
   description = "stw db security group for rds mysql"
   value       = aws_security_group.lcchua-tf-db-sg.id
 }
