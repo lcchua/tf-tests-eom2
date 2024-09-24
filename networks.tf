@@ -241,14 +241,13 @@ resource "aws_security_group" "lcchua-tf-ec2-web-sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  /* Uncomment as and when needed
   egress {
     from_port   = 0
     to_port     = 0
     protocol    = -1
     cidr_blocks = ["0.0.0.0/0"]
   }
-  */
+
 
   tags = {
     group = var.stack_name
