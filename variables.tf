@@ -84,6 +84,12 @@ variable "db_password" {
   sensitive   = true
 }
 
-variable "env" {}
+variable "env" {
+  description = "Environment of the build"
+  type = string
+}
 
-variable "rnd_id" {}
+variable "rnd_id" {
+  description = "Random identifier"
+  type = string
+}
