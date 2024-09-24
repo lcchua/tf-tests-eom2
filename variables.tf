@@ -1,6 +1,6 @@
 variable "stack_name" {
   type    = string
-  default = "lcchua-STW"
+  default = "lcchua-stw"
 }
 
 variable "key_name" {
