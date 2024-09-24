@@ -10,7 +10,8 @@ resource "aws_vpc" "lcchua-tf-vpc" {
 
   tags = {
     group = var.stack_name
-    Name  = "${var.stack_name}-vpc"
+    form_type = "Terraform Resources"
+    Name  = "${var.stack_name}-${env}-vpc-${rnd_id}"
   }
 }
 output "vpc-id" {
@@ -30,7 +31,9 @@ resource "aws_subnet" "lcchua-tf-public-subnet" {
   map_public_ip_on_launch = true
 
   tags = {
-    Name = "${var.stack_name}-public-subnet-${count.index + 1}"
+    group = var.stack_name
+    form_type = "Terraform Resources"
+    Name = "${var.stack_name}-${env}-public-subnet-${count.index + 1}-${rnd_id}"
   }
 }
 output "public-subnet" {
@@ -47,7 +50,9 @@ resource "aws_subnet" "lcchua-tf-private-subnet" {
   #map_public_ip_on_launch = true
 
   tags = {
-    Name = "${var.stack_name}-private-subnet-${count.index + 1}"
+    group = var.stack_name
+    form_type = "Terraform Resources"
+    Name = "${var.stack_name}-${env}-private-subnet-${count.index + 1}-${rnd_id}"
   }
 }
 output "private-subnet" {
@@ -62,7 +67,9 @@ resource "aws_internet_gateway" "lcchua-tf-igw" {
   vpc_id = aws_vpc.lcchua-tf-vpc.id
 
   tags = {
-    Name = "${var.stack_name}-igw"
+    group = var.stack_name
+    form_type = "Terraform Resources"
+    Name = "${var.stack_name}-${env}-igw-${rnd_id}"
   }
 }
 output "igw" {
@@ -79,7 +86,9 @@ resource "aws_nat_gateway" "lcchua-tf-nat-gw" {
   subnet_id     = element(aws_subnet.lcchua-tf-public-subnet[*].id, 0)
 
   tags = {
-    Name  = "${var.stack_name}-nat-gw"
+    group = var.stack_name
+    form_type = "Terraform Resources"
+    Name  = "${var.stack_name}-${env}-nat-gw-${rnd_id}"
   }
 }
 output "nat-gw" {
@@ -95,7 +104,9 @@ resource "aws_eip" "lcchua-tf-eip" {
   domain    = "vpc"
 
   tags = {
-    Name  = "${var.stack_name}-eip"
+    group = var.stack_name
+    form_type = "Terraform Resources"
+    Name  = "${var.stack_name}-${env}-eip-${rnd_id}"
   }
 }
 output "eip" {
@@ -125,7 +136,9 @@ resource "aws_route_table" "lcchua-tf-private-rt" {
 */
 
   tags = {
-    Name  = "${var.stack_name}-private-rt"
+    group = var.stack_name
+    form_type = "Terraform Resources"
+    Name  = "${var.stack_name}-${env}-private-rt-${rnd_id}"
   }
 }
 resource "aws_route_table_association" "lcchua-tf-private-rta" {
@@ -156,7 +169,9 @@ resource "aws_route_table" "lcchua-tf-public-rt" {
   }
 
   tags = {
-    Name = "${var.stack_name}-public-rt"
+    group = var.stack_name
+    form_type = "Terraform Resources"
+    Name = "${var.stack_name}-${env}-public-rt-${rnd_id}"
   }
 }
 resource "aws_route_table_association" "lcchua-tf-public-rta" {
@@ -185,7 +200,9 @@ resource "aws_vpc_endpoint" "lcchua-tf-vpce-s3" {
   ]
 
   tags = {
-    Name  = "${var.stack_name}-vpc-s3-endpoint"
+    group = var.stack_name
+    form_type = "Terraform Resources"
+    Name  = "${var.stack_name}-${env}-vpc-s3-endpoint-${rnd_id}"
   }
 }
 output "vpce-s3" {
@@ -198,7 +215,7 @@ output "vpce-s3" {
 
 # EC2 Security Group
 resource "aws_security_group" "lcchua-tf-ec2-web-sg" {
-  name   = "${var.stack_name}-ec2-sg"
+  name   = "${var.stack_name}-${env}-ec2-sg-${rnd_id}"
   vpc_id = aws_vpc.lcchua-tf-vpc.id
 
   # SSH - inbound rule that allows SSH traffic only from your IP addr
@@ -232,7 +249,9 @@ resource "aws_security_group" "lcchua-tf-ec2-web-sg" {
   }
 
   tags = {
-    Name = "${var.stack_name}-ec2-web-sg"
+    group = var.stack_name
+    form_type = "Terraform Resources"
+    Name = "${var.stack_name}-${env}-ec2-web-sg-${rnd_id}"
   }
 }
 output "ec2-web-sg" {
@@ -243,7 +262,7 @@ output "ec2-web-sg" {
 
 # RDS Security Group
 resource "aws_security_group" "lcchua-tf-db-sg" {
-  name   = "${var.stack_name}-db-sg"
+  name   = "${var.stack_name}-${env}-db-sg-${rnd_id}"
   vpc_id = aws_vpc.lcchua-tf-vpc.id
 
   ingress {
@@ -254,7 +273,9 @@ resource "aws_security_group" "lcchua-tf-db-sg" {
   }
 
   tags = {
-    Name = "${var.stack_name}-db-sg"
+    group = var.stack_name
+    form_type = "Terraform Resources"
+    Name = "${var.stack_name}-${env}-db-sg-${rnd_id}"
   }
 }
 output "db-sg" {

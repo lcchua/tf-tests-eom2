@@ -82,16 +82,3 @@ variable "db_password" {
   sensitive   = true
 }
 
-/* 
-# The variables defined from here on are meant for the AWS VPC Terraform module
-variable "vpc_name" {
-  description = "The VPC Name to use"
-  type        = string
-  default     = "lcchua-mod-vpc"
-}
-variable "sg_name" {
-  description = "Security group for ec2 web allowing  http-https-ssh"
-  type        = string
-  default     = "lcchua-mod-ec2-sg"
-}
- */

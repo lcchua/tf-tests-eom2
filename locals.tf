@@ -4,7 +4,7 @@
 data "aws_availablty_zones" "available" {
   state = "available"
 }
-output "List of AZs in the defined region" {
+output "azs-list" {
   description = "stw availability zones in region"
   value       = data.aws_availablty_zones.available.names[*]
 }

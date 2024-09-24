@@ -54,7 +54,9 @@ resource "aws_instance" "lcchua-tf-ec2" {
   monitoring                  = true
 
   tags = {
-    Name  = "${var.stack_name}-ec2-server"
+    group = var.stack_name
+    form_type = "Terraform Resources"
+    Name  = "${var.stack_name}-${env}-ec2-server-${rnd_id}"
   }
 }
 output "ec2" {
@@ -69,6 +71,6 @@ output "ec2_web_public_dns" {
   description = "The public dbs address of the ec2 web app"
   value       = aws_eip.lcchua-tf-eip[0].public_dns
 
-  # Waist for the EIPs to be created and dsitributed
+  # Wait for the EIPs to be created and dsitributed
   depends_on = [aws_eip.lcchua-tf-eip]
 }
