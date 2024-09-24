@@ -11,7 +11,7 @@ resource "aws_vpc" "lcchua-tf-vpc" {
   tags = {
     group = var.stack_name
     form_type = "Terraform Resources"
-    Name  = "${var.stack_name}-${env}-vpc-${rnd_id}"
+    Name  = "${var.stack_name}-${var.env}-vpc-${var.rnd_id}"
   }
 }
 output "vpc-id" {
@@ -33,7 +33,7 @@ resource "aws_subnet" "lcchua-tf-public-subnet" {
   tags = {
     group = var.stack_name
     form_type = "Terraform Resources"
-    Name = "${var.stack_name}-${env}-public-subnet-${count.index + 1}-${rnd_id}"
+    Name = "${var.stack_name}-${var.env}-public-subnet-${count.index + 1}-${var.rnd_id}"
   }
 }
 output "public-subnet" {
@@ -52,7 +52,7 @@ resource "aws_subnet" "lcchua-tf-private-subnet" {
   tags = {
     group = var.stack_name
     form_type = "Terraform Resources"
-    Name = "${var.stack_name}-${env}-private-subnet-${count.index + 1}-${rnd_id}"
+    Name = "${var.stack_name}-${var.env}-private-subnet-${count.index + 1}-${var.rnd_id}"
   }
 }
 output "private-subnet" {
@@ -69,7 +69,7 @@ resource "aws_internet_gateway" "lcchua-tf-igw" {
   tags = {
     group = var.stack_name
     form_type = "Terraform Resources"
-    Name = "${var.stack_name}-${env}-igw-${rnd_id}"
+    Name = "${var.stack_name}-${var.env}-igw-${var.rnd_id}"
   }
 }
 output "igw" {
@@ -88,7 +88,7 @@ resource "aws_nat_gateway" "lcchua-tf-nat-gw" {
   tags = {
     group = var.stack_name
     form_type = "Terraform Resources"
-    Name  = "${var.stack_name}-${env}-nat-gw-${rnd_id}"
+    Name  = "${var.stack_name}-${var.env}-nat-gw-${var.rnd_id}"
   }
 }
 output "nat-gw" {
@@ -106,7 +106,7 @@ resource "aws_eip" "lcchua-tf-eip" {
   tags = {
     group = var.stack_name
     form_type = "Terraform Resources"
-    Name  = "${var.stack_name}-${env}-eip-${rnd_id}"
+    Name  = "${var.stack_name}-${var.env}-eip-${var.rnd_id}"
   }
 }
 output "eip" {
@@ -138,7 +138,7 @@ resource "aws_route_table" "lcchua-tf-private-rt" {
   tags = {
     group = var.stack_name
     form_type = "Terraform Resources"
-    Name  = "${var.stack_name}-${env}-private-rt-${rnd_id}"
+    Name  = "${var.stack_name}-${var.env}-private-rt-${var.rnd_id}"
   }
 }
 resource "aws_route_table_association" "lcchua-tf-private-rta" {
@@ -171,7 +171,7 @@ resource "aws_route_table" "lcchua-tf-public-rt" {
   tags = {
     group = var.stack_name
     form_type = "Terraform Resources"
-    Name = "${var.stack_name}-${env}-public-rt-${rnd_id}"
+    Name = "${var.stack_name}-${var.env}-public-rt-${var.rnd_id}"
   }
 }
 resource "aws_route_table_association" "lcchua-tf-public-rta" {
@@ -202,7 +202,7 @@ resource "aws_vpc_endpoint" "lcchua-tf-vpce-s3" {
   tags = {
     group = var.stack_name
     form_type = "Terraform Resources"
-    Name  = "${var.stack_name}-${env}-vpc-s3-endpoint-${rnd_id}"
+    Name  = "${var.stack_name}-${var.env}-vpc-s3-endpoint-${var.rnd_id}"
   }
 }
 output "vpce-s3" {
@@ -215,7 +215,7 @@ output "vpce-s3" {
 
 # EC2 Security Group
 resource "aws_security_group" "lcchua-tf-ec2-web-sg" {
-  name   = "${var.stack_name}-${env}-ec2-sg-${rnd_id}"
+  name   = "${var.stack_name}-${var.env}-ec2-sg-${var.rnd_id}"
   vpc_id = aws_vpc.lcchua-tf-vpc.id
 
   # SSH - inbound rule that allows SSH traffic only from your IP addr
@@ -251,7 +251,7 @@ resource "aws_security_group" "lcchua-tf-ec2-web-sg" {
   tags = {
     group = var.stack_name
     form_type = "Terraform Resources"
-    Name = "${var.stack_name}-${env}-ec2-web-sg-${rnd_id}"
+    Name = "${var.stack_name}-${var.env}-ec2-web-sg-${var.rnd_id}"
   }
 }
 output "ec2-web-sg" {
@@ -262,7 +262,7 @@ output "ec2-web-sg" {
 
 # RDS Security Group
 resource "aws_security_group" "lcchua-tf-db-sg" {
-  name   = "${var.stack_name}-${env}-db-sg-${rnd_id}"
+  name   = "${var.stack_name}-${var.env}-db-sg-${var.rnd_id}"
   vpc_id = aws_vpc.lcchua-tf-vpc.id
 
   ingress {
@@ -275,7 +275,7 @@ resource "aws_security_group" "lcchua-tf-db-sg" {
   tags = {
     group = var.stack_name
     form_type = "Terraform Resources"
-    Name = "${var.stack_name}-${env}-db-sg-${rnd_id}"
+    Name = "${var.stack_name}-${var.env}-db-sg-${var.rnd_id}"
   }
 }
 output "db-sg" {

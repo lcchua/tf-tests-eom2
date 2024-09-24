@@ -56,7 +56,7 @@ resource "aws_instance" "lcchua-tf-ec2" {
   tags = {
     group = var.stack_name
     form_type = "Terraform Resources"
-    Name  = "${var.stack_name}-${env}-ec2-server-${rnd_id}"
+    Name  = "${var.stack_name}-${var.env}-ec2-server-${var.rnd_id}"
   }
 }
 output "ec2" {
