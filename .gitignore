@@ -40,3 +40,4 @@ terraform.rc
 terraform_out
 *.bak
 *.mod
+*.sql
