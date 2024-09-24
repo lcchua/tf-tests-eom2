@@ -1,5 +1,5 @@
 resource "aws_db_subnet_group" "lcchua-tf-db-subnet-grp" {
-  name        = "lcchua-STW-db-subnet-grp"
+  name        = "lcchua-tf-eom2-db-subnet-grp"
   subnet_ids  = [for subnet in aws_subnet.lcchua-tf-private-subnet : subnet.id]
 }
 
