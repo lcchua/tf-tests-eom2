@@ -46,7 +46,7 @@ variable "settings" {
     "database" = {
       allocate_storage  = 10            // storage in GB
       engine            = "mysql"       // engine type
-      engine_version    = "8.0.27"      // engine_version
+      #engine_version    = "8.0.35"      // engine_version
       instance_class    = "db.t2.micro" // rds instance type
       #db_name           = "eom2_tutorial"    // dtabase name if needed
       skip_final_snapshot = true
