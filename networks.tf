@@ -117,10 +117,12 @@ resource "aws_route_table" "lcchua-tf-private-rt" {
     #gateway_id = "local"
   #}
 
+/* Uncomment as needed   
   route {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_nat_gateway.lcchua-tf-nat-gw.id
-  }
+  } 
+*/
 
   tags = {
     Name  = "${var.stack_name}-private-rt"
