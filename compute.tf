@@ -41,7 +41,7 @@ resource "aws_instance" "lcchua-tf-ec2" {
 
   # Uncomment the appropriate subnet_id value assignment as accordingly
   #subnet_id                   = element(aws_subnet.lcchua-tf-public-subnet[*].id, 0)
-  subnet_id                   = aws_subnet.lcchua-tf-public-subnet[count.index % length(aws_subnet.lcchua-tf-public-subnet[*].id)]
+  subnet_id                   = aws_subnet.lcchua-tf-public-subnet[count.index].id
   associate_public_ip_address = true
   vpc_security_group_ids      = [aws_security_group.lcchua-tf-ec2-web-sg.id]
 
