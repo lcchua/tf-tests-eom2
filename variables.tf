@@ -84,3 +84,6 @@ variable "db_password" {
   sensitive   = true
 }
 
+variable "env" {}
+
+variable "rnd_id" {}
