@@ -44,18 +44,18 @@ jobs:
 
       - name: Select the Envionment and set the Terraform Workspaces
         run: |
-          terraform workspace select ${{ github.event.inputs.env_select }} || terraform workspace new ${{ github.event.inputs.env_select }}
+          terraform workspace select ${{ github.event.inputs.env_select }} 2>/dev/null || terraform workspace new ${{ github.event.inputs.env_select }}
           terraform workspace list
-
-      - name: Terraform Plan
-        run: terraform plan -no-color -input=false -var-file="${{ github.event.inputs.env_select }}.tfvars" -out="${{ github.event.inputs.env_select }}_tf_out"
         continue-on-error: true
 
-      - name: Terraform Apply
-        run: terraform apply -auto-approve "${{ github.event.inputs.env_select }}_tf_out"
+      #- name: Terraform Plan
+      #  run: terraform plan -no-color -input=false -var-file="${{ github.event.inputs.env_select }}.tfvars" -out="${{ github.event.inputs.env_select }}_tf_out"
+
+      #- name: Terraform Apply
+      #  run: terraform apply -auto-approve "${{ github.event.inputs.env_select }}_tf_out"
 
       #- name: Pause 3min to verify bucket creation
       #  run: sleep 180
 
-      #- name: Terraform destroy
-      #  run: terraform destroy -var-file=${{ github.event.inputs.choice }}.tfvars -auto-approve
+      - name: Terraform destroy
+        run: terraform destroy -var-file=${{ github.event.inputs.choice }}.tfvars -auto-approve
