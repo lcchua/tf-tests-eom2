@@ -51,8 +51,8 @@ jobs:
         run: terraform plan -no-color -input=false -var-file="${{ github.event.inputs.env_select }}.tfvars" -out="${{ github.event.inputs.env_select }}_tf_out"
         continue-on-error: true
 
-      - name: Terraform Apply
-        run: terraform apply -auto-approve "${{ github.event.inputs.env_select }}_tf_out"
+      #- name: Terraform Apply
+      #  run: terraform apply -auto-approve "${{ github.event.inputs.env_select }}_tf_out"
 
       #- name: Pause 3min to verify bucket creation
       #  run: sleep 180
