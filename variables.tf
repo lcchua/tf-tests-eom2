@@ -7,7 +7,7 @@ variable "key_name" {
   description = "Name of EC2 Key Pair"
   type        = string
   #default     = "lcchua-useast1-20072024"
-  default     = "lcchua-useast1-30072024"
+  default = "lcchua-useast1-30072024"
 }
 
 /* Uncomment as and when needed
@@ -46,17 +46,17 @@ variable "settings" {
   type        = map(any)
   default = {
     "database" = {
-      allocate_storage    = 10                // storage in GB
-      engine              = "mysql"           // engine type
-      engine_version      = "8.0"             // engine_version
-      instance_class      = "db.t4g.micro"    // rds instance type
+      allocate_storage = 10             // storage in GB
+      engine           = "mysql"        // engine type
+      engine_version   = "8.0"          // engine_version
+      instance_class   = "db.t4g.micro" // rds instance type
       #db_name             = "eom2_tutorial"  // dtabase name if needed
-      db_username         = "admin"           // database admin username
+      db_username         = "admin" // database admin username
       skip_final_snapshot = true
     },
     "web_app" = {
-      count               = 1                 // number of ec2 instances
-      instance_type       = "t2.micro"        // ec2 instance type
+      count         = 1          // number of ec2 instances
+      instance_type = "t2.micro" // ec2 instance type
     }
   }
 }

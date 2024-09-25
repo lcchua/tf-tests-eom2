@@ -22,5 +22,5 @@ resource "aws_secretsmanager_secret_version" "db_secret_ver" {
 
 output "secret_arn" {
   description = "The ARN of the secret for reference"
-  value = aws_secretsmanager_secret.db_secret.arn
+  value       = aws_secretsmanager_secret.db_secret.arn
 }
