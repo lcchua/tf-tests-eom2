@@ -64,7 +64,7 @@ output "ec2" {
   value       = aws_instance.lcchua-tf-ec2[*].id
 }
 output "user-data" {
-  description = "stw user data"
+  description = "stw EC2 user data"
   value       = "${path.module}/ws_install.sh"
 }
 output "ec2_web_public_dns" {

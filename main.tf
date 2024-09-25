@@ -6,7 +6,13 @@ resource "random_password" "db_password" {
 }
 
 resource "aws_secretsmanager_secret" "db_secret" {
-  name = "lcchua-gen-db-pwd"
+  name = "${var.stack_name}-${var.env}-db-secret-${var.rnd_id}"
+
+  tags = {
+    group     = var.stack_name
+    form_type = "Terraform Resources"
+    Name      = "${var.stack_name}-${var.env}-db-secret-${var.rnd_id}"
+  }
 }
 
 resource "aws_secretsmanager_secret_version" "db_secret_ver" {

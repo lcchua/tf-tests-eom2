@@ -1,13 +1,3 @@
-/*
-data "aws_secretsmanager_secret" "password" {
-  name = "lcchua-gen-db-password"
-
-}
-
-data "aws_secretsmanager_secret_version" "password" {
-  secret_id = data.aws_secretsmanager_secret.password.id
-}
-*/
 
 resource "aws_db_subnet_group" "lcchua-tf-db-subnet-grp" {
   #name        = "lcchua-tf-eom2-db-subnet-grp"
@@ -28,19 +18,18 @@ data "aws_rds_engine_version" "latest" {
 }
 */
 resource "aws_db_instance" "lcchua-tf-db" {
-  allocated_storage = var.settings.database.allocate_storage
-  engine            = var.settings.database.engine
-  engine_version    = var.settings.database.engine_version
-  #engine_version = data.aws_rds_engine_version.latest.version
-  instance_class = var.settings.database.instance_class
-  identifier     = "${var.stack_name}-${var.env}-db-server-${var.rnd_id}"
-  #db_name = var.settings.database.db_name
-  username               = var.settings.database.db_username
-  #password               = data.aws_secretsmanager_secret_version.password
-  password               = aws_secretsmanager_secret_version.db_secret_ver.secret_string
-  db_subnet_group_name   = aws_db_subnet_group.lcchua-tf-db-subnet-grp.id
-  vpc_security_group_ids = [aws_security_group.lcchua-tf-db-sg.id]
-  skip_final_snapshot    = var.settings.database.skip_final_snapshot
+  allocated_storage       = var.settings.database.allocate_storage
+  engine                  = var.settings.database.engine
+  engine_version          = var.settings.database.engine_version
+  #engine_version          = data.aws_rds_engine_version.latest.version
+  instance_class          = var.settings.database.instance_class
+  identifier              = "${var.stack_name}-${var.env}-db-server-${var.rnd_id}"
+  #db_name                 = var.settings.database.db_name
+  username                = var.settings.database.db_username
+  password                = aws_secretsmanager_secret_version.db_secret_ver.secret_string
+  db_subnet_group_name    = aws_db_subnet_group.lcchua-tf-db-subnet-grp.id
+  vpc_security_group_ids  = [aws_security_group.lcchua-tf-db-sg.id]
+  skip_final_snapshot     = var.settings.database.skip_final_snapshot
 
   tags = {
     group     = var.stack_name

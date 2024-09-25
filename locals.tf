@@ -1,6 +1,5 @@
 /* Uncomment as and when needed
-# This data object holds all the available availability
-# zones in the defined region
+# This data object holds all the available availability zones in the defined region
 data "aws_availablty_zones" "available" {
   state = "available"
 }
