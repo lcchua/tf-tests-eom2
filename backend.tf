@@ -1,7 +1,7 @@
 terraform {
   backend "s3" {
     bucket = "sctp-ce7-tfstate"
-    key    = "${var.stack_name}-${var.env}-${var.rnd_id}.tfstate"
+    key    = "tf-lcchua-eom2-25092024.tfstate"
     region = "us-east-1"
   }
 }
