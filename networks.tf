@@ -9,9 +9,9 @@ resource "aws_vpc" "lcchua-tf-vpc" {
   enable_dns_hostnames = true
 
   tags = {
-    group = var.stack_name
+    group     = var.stack_name
     form_type = "Terraform Resources"
-    Name  = "${var.stack_name}-${var.env}-vpc-${var.rnd_id}"
+    Name      = "${var.stack_name}-${var.env}-vpc-${var.rnd_id}"
   }
 }
 output "vpc-id" {
@@ -31,9 +31,9 @@ resource "aws_subnet" "lcchua-tf-public-subnet" {
   map_public_ip_on_launch = true
 
   tags = {
-    group = var.stack_name
+    group     = var.stack_name
     form_type = "Terraform Resources"
-    Name = "${var.stack_name}-${var.env}-public-subnet-${count.index + 1}-${var.rnd_id}"
+    Name      = "${var.stack_name}-${var.env}-public-subnet-${count.index + 1}-${var.rnd_id}"
   }
 }
 output "public-subnet" {
@@ -43,16 +43,16 @@ output "public-subnet" {
 
 # Private Subnets
 resource "aws_subnet" "lcchua-tf-private-subnet" {
-  count                   = var.subnet_count.private   # adjust number of public subnets to create
-  vpc_id                  = aws_vpc.lcchua-tf-vpc.id
-  cidr_block              = "10.0.${count.index + 3}.0/24"
-  availability_zone       = element(local.availability_zones, count.index)
+  count             = var.subnet_count.private # adjust number of public subnets to create
+  vpc_id            = aws_vpc.lcchua-tf-vpc.id
+  cidr_block        = "10.0.${count.index + 3}.0/24"
+  availability_zone = element(local.availability_zones, count.index)
   #map_public_ip_on_launch = true
 
   tags = {
-    group = var.stack_name
+    group     = var.stack_name
     form_type = "Terraform Resources"
-    Name = "${var.stack_name}-${var.env}-private-subnet-${count.index + 1}-${var.rnd_id}"
+    Name      = "${var.stack_name}-${var.env}-private-subnet-${count.index + 1}-${var.rnd_id}"
   }
 }
 output "private-subnet" {
@@ -67,9 +67,9 @@ resource "aws_internet_gateway" "lcchua-tf-igw" {
   vpc_id = aws_vpc.lcchua-tf-vpc.id
 
   tags = {
-    group = var.stack_name
+    group     = var.stack_name
     form_type = "Terraform Resources"
-    Name = "${var.stack_name}-${var.env}-igw-${var.rnd_id}"
+    Name      = "${var.stack_name}-${var.env}-igw-${var.rnd_id}"
   }
 }
 output "igw" {
@@ -99,14 +99,14 @@ output "nat-gw" {
 
 resource "aws_eip" "lcchua-tf-eip" {
   count = var.settings.web_app.count
-  
-  instance  = aws_instance.lcchua-tf-ec2[count.index].id
-  domain    = "vpc"
+
+  instance = aws_instance.lcchua-tf-ec2[count.index].id
+  domain   = "vpc"
 
   tags = {
-    group = var.stack_name
+    group     = var.stack_name
     form_type = "Terraform Resources"
-    Name  = "${var.stack_name}-${var.env}-eip-${var.rnd_id}"
+    Name      = "${var.stack_name}-${var.env}-eip-${var.rnd_id}"
   }
 }
 output "eip" {
@@ -124,11 +124,11 @@ resource "aws_route_table" "lcchua-tf-private-rt" {
   # since this is exactly the route AWS will create, the route will be adopted
   # this route{} block may not need to be defined here
   #route {
-    #cidr_block = aws_vpc.lcchua-tf-vpc.cidr_block
-    #gateway_id = "local"
+  #cidr_block = aws_vpc.lcchua-tf-vpc.cidr_block
+  #gateway_id = "local"
   #}
 
-/* Uncomment as needed   
+  /* Uncomment as needed   
   route {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_nat_gateway.lcchua-tf-nat-gw.id
@@ -136,9 +136,9 @@ resource "aws_route_table" "lcchua-tf-private-rt" {
 */
 
   tags = {
-    group = var.stack_name
+    group     = var.stack_name
     form_type = "Terraform Resources"
-    Name  = "${var.stack_name}-${var.env}-private-rt-${var.rnd_id}"
+    Name      = "${var.stack_name}-${var.env}-private-rt-${var.rnd_id}"
   }
 }
 resource "aws_route_table_association" "lcchua-tf-private-rta" {
@@ -159,8 +159,8 @@ resource "aws_route_table" "lcchua-tf-public-rt" {
   # since this is exactly the route AWS will create, the route will be adopted
   # this route{} block may not need to be defined here
   #route {
-    #cidr_block = aws_vpc.lcchua-tf-vpc.cidr_block
-    #gateway_id = "local"
+  #cidr_block = aws_vpc.lcchua-tf-vpc.cidr_block
+  #gateway_id = "local"
   #}
 
   route {
@@ -169,9 +169,9 @@ resource "aws_route_table" "lcchua-tf-public-rt" {
   }
 
   tags = {
-    group = var.stack_name
+    group     = var.stack_name
     form_type = "Terraform Resources"
-    Name = "${var.stack_name}-${var.env}-public-rt-${var.rnd_id}"
+    Name      = "${var.stack_name}-${var.env}-public-rt-${var.rnd_id}"
   }
 }
 resource "aws_route_table_association" "lcchua-tf-public-rta" {
@@ -250,9 +250,9 @@ resource "aws_security_group" "lcchua-tf-ec2-web-sg" {
 
 
   tags = {
-    group = var.stack_name
+    group     = var.stack_name
     form_type = "Terraform Resources"
-    Name = "${var.stack_name}-${var.env}-ec2-web-sg-${var.rnd_id}"
+    Name      = "${var.stack_name}-${var.env}-ec2-web-sg-${var.rnd_id}"
   }
 }
 output "ec2-web-sg" {
@@ -267,16 +267,16 @@ resource "aws_security_group" "lcchua-tf-db-sg" {
   vpc_id = aws_vpc.lcchua-tf-vpc.id
 
   ingress {
-    from_port = "3306"
-    to_port   = "3306"
-    protocol  = "tcp"
+    from_port       = "3306"
+    to_port         = "3306"
+    protocol        = "tcp"
     security_groups = [aws_security_group.lcchua-tf-ec2-web-sg.id]
   }
 
   tags = {
-    group = var.stack_name
+    group     = var.stack_name
     form_type = "Terraform Resources"
-    Name = "${var.stack_name}-${var.env}-db-sg-${var.rnd_id}"
+    Name      = "${var.stack_name}-${var.env}-db-sg-${var.rnd_id}"
   }
 }
 output "db-sg" {

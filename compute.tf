@@ -12,8 +12,8 @@ data "aws_ami" "lcchua-tf-ami" {
     name   = "name"
     values = ["al2023-ami-2023.5.20240722.0-kernel-6.1-x86_64"]
   }
-# To comment out in case the AMI image id changes over time by AWS
-/*
+  # To comment out in case the AMI image id changes over time by AWS
+  /*
   filter {
     name   = "image-id"
     values = ["ami-0427090fd1714168b"]
@@ -27,9 +27,9 @@ output "ami" {
 
 #============ EC2 INSTANCE CREATION WITH AUTO-INSTALLATION =============
 resource "aws_instance" "lcchua-tf-ec2" {
-  count = var.settings.web_app.count  # adjust the number of EC2 instances to create
+  count = var.settings.web_app.count # adjust the number of EC2 instances to create
 
-  ami           = data.aws_ami.lcchua-tf-ami.id
+  ami = data.aws_ami.lcchua-tf-ami.id
   #instance_type = var.instance_type
   instance_type = var.settings.web_app.instance_type
 
@@ -47,16 +47,16 @@ resource "aws_instance" "lcchua-tf-ec2" {
 
   # To update the previously created EC2 with a user data script passed in.
   # This is to convert your EC2 into a HTTPD web server.
-  user_data_replace_on_change = true    // to trigger a destroy and recreate
-  user_data = file("${path.module}/ws_install.sh")
+  user_data_replace_on_change = true // to trigger a destroy and recreate
+  user_data                   = file("${path.module}/ws_install.sh")
 
   # Enable detailed monitoring
-  monitoring                  = true
+  monitoring = true
 
   tags = {
-    group = var.stack_name
+    group     = var.stack_name
     form_type = "Terraform Resources"
-    Name  = "${var.stack_name}-${var.env}-ec2-server-${var.rnd_id}"
+    Name      = "${var.stack_name}-${var.env}-ec2-server-${var.rnd_id}"
   }
 }
 output "ec2" {
