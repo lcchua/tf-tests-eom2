@@ -41,3 +41,4 @@ terraform_out
 *.bak
 *.mod
 *_out
+*.tbd
