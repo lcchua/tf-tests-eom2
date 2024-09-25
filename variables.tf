@@ -49,6 +49,7 @@ variable "settings" {
       engine_version    = "8.0"               // engine_version
       instance_class    = "db.t4g.micro"      // rds instance type
       #db_name           = "eom2_tutorial"    // dtabase name if needed
+      db_username       = "admin"             // database admin username
       skip_final_snapshot = true
     },
     "web_app" = {
@@ -70,6 +71,7 @@ variable "my_ip" {
 
 # This varaible conatins the database master username.
 # This will be stored in a secrets file.
+/*
 variable "db_username" {
   description = "Database master username"
   type        = string
@@ -83,6 +85,7 @@ variable "db_password" {
   type        = string
   sensitive   = true
 }
+*/
 
 variable "env" {
   description = "Environment of the build"

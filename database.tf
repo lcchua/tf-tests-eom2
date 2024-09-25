@@ -1,3 +1,12 @@
+data "aws_secretsmanager_secret" "password" {
+  name = "lcchua-test-db-password"
+
+}
+
+data "aws_secretsmanager_secret_version" "password" {
+  secret_id = data.aws_secretsmanager_secret.password
+}
+
 resource "aws_db_subnet_group" "lcchua-tf-db-subnet-grp" {
   #name        = "lcchua-tf-eom2-db-subnet-grp"
   name        = "${var.stack_name}-${var.env}-db-subnet-grp-${var.rnd_id}"
@@ -24,8 +33,8 @@ resource "aws_db_instance" "lcchua-tf-db" {
   instance_class = var.settings.database.instance_class
   identifier = "${var.stack_name}-${var.env}-db-server-${var.rnd_id}"
   #db_name = var.settings.database.db_name
-  username = var.db_username
-  password = var.db_password
+  username = var.settings.database.db_username
+  password = data.aws_secretsmanager_secret_version.password
   db_subnet_group_name = aws_db_subnet_group.lcchua-tf-db-subnet-grp.id
   vpc_security_group_ids = [aws_security_group.lcchua-tf-db-sg.id]
   skip_final_snapshot = var.settings.database.skip_final_snapshot
@@ -36,6 +45,7 @@ resource "aws_db_instance" "lcchua-tf-db" {
     Name  = "${var.stack_name}-${var.env}-db-server-${var.rnd_id}"
   }
 }
+
 output "database_endpoint" {
   description = "The endpoint of the database"
   value       = aws_db_instance.lcchua-tf-db.address
