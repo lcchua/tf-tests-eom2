@@ -58,4 +58,4 @@ jobs:
       #  run: sleep 180
 
       - name: Terraform destroy
-        run: terraform destroy -var-file=${{ github.event.inputs.choice }}.tfvars -auto-approve
+        run: terraform destroy -var-file=${{ github.event.inputs.env_select }}.tfvars -auto-approve
