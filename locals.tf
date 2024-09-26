@@ -1,11 +1,11 @@
-/* Uncomment as and when needed
-# This data object holds all the available availability zones in the defined region
-data "aws_availablty_zones" "available" {
+/* Uncomment as and when needed together with 
+   uncommenting the local availability_zones attribute below
+data "aws_availability_zones" "available" {
   state = "available"
 }
 output "azs-list" {
   description = "stw availability zones in region"
-  value       = data.aws_availablty_zones.available.names[*]
+  value       = data.aws_availability_zones.available.names[*]
 }
 */
 

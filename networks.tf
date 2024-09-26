@@ -27,7 +27,7 @@ resource "aws_subnet" "lcchua-tf-public-subnet" {
   count                   = var.subnet_count.public # adjust number of public subnets to create
   vpc_id                  = aws_vpc.lcchua-tf-vpc.id
   cidr_block              = "10.0.${count.index}.0/24"
-  availability_zone       = element(local.availability_zones, count.index)
+  availability_zone       = element(local.availability_zones, count.index)  # add 1 subnet per az
   map_public_ip_on_launch = true
 
   tags = {
@@ -46,7 +46,7 @@ resource "aws_subnet" "lcchua-tf-private-subnet" {
   count             = var.subnet_count.private # adjust number of public subnets to create
   vpc_id            = aws_vpc.lcchua-tf-vpc.id
   cidr_block        = "10.0.${count.index + 3}.0/24"
-  availability_zone = element(local.availability_zones, count.index)
+  availability_zone = element(local.availability_zones, count.index)  # add 1 subnet per az
   #map_public_ip_on_launch = true
 
   tags = {
