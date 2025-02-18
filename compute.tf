@@ -71,6 +71,6 @@ output "ec2_web_public_dns" {
   description = "The public dns address of the ec2 web app"
   value       = aws_eip.lcchua-tf-eip[0].public_dns
 
-  # Wait for the EIPs to be created and dsitributed
+  # Wait for the EIPs to be created and distributed
   depends_on = [aws_eip.lcchua-tf-eip]
 }
