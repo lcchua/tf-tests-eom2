@@ -37,7 +37,7 @@ resource "aws_instance" "lcchua-tf-ec2" {
   # To create an EC2 key pair using Terraform, and also 
   # download the key pair to your local machine for you to 
   # use to connect to the EC2 instance
-  #key_name      = aws_key_pair.lcchua-tf-key-pair.key_name
+  #key_name      = aws_key_pair.this.key_name
 
   # Uncomment the appropriate subnet_id value assignment as accordingly
   #subnet_id                   = element(aws_subnet.lcchua-tf-public-subnet[*].id, 0)
