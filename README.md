@@ -1,6 +1,6 @@
 # Project covering AWS Compute/Storage, Terraform, GitHub Actions
 
-In this project, the Terraform scripts and GitHub Actions VI/CD pipelines created are as follows:
+In this project, the Terraform scripts and GitHub Actions CI/CD pipelines created are as follows:
 
 1.  Create AWS VPC and its networking components for 3 public subnets, 3 private subnets and 1 internet gateway using Terraform Resources. Ensure that the output is the same as that created via the cloud console.
        - Create AWS VPC and its networking components for 3 public subnets, 3 private subnets and 1 internet gateway using Terraform Module. Ensure that the output is the same as that created via the cloud console.
