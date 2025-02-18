@@ -15,10 +15,11 @@ module "lcchua-vpc" {
   map_public_ip_on_launch = true
 
   tags = {
-    Terraform = "true"
+    Terraform   = "true"
     Environment = var.env
-    Created_by = "lcchua"
-    Cohort = "CE7"
+    Created_by  = "lcchua"
+    Cohort      = "CE7"
+    form_type   = "Terraform Module"
   }
 }
 output "lcchua-vpc-arn" {
@@ -69,6 +70,7 @@ module "lcchua-http-https-ssh-mysql-sg" {
   tags  = {
     Name        = "lcchua-http-https-ssh-mysql-sg"
     Environment = var.env
+    form_type   = "Terraform Module"
   }
 }
 output "lcchua-http-https-ssh-mysql-sg-id" {
