@@ -68,7 +68,7 @@ output "user-data" {
   value       = "${path.module}/ws_install.sh"
 }
 output "ec2_web_public_dns" {
-  description = "The public dbs address of the ec2 web app"
+  description = "The public dns address of the ec2 web app"
   value       = aws_eip.lcchua-tf-eip[0].public_dns
 
   # Wait for the EIPs to be created and dsitributed
