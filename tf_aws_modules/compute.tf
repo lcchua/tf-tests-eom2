@@ -12,6 +12,7 @@ module "lcchua-ec2-instance" {
   tags = {
     Terraform   = "true"
     Environment = var.env
+    form_type = "Terraform Module"
   }
 }
 output "lcchua-ec2-instance" {
